@@ -5,5 +5,29 @@
   </head>
   <body>
     <h1>Hello World!</h1>
+    <div id="myPlot">
+    </div>
   </body>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script type="text/javascript" src="js/csv2json.js"></script>
+  <script type="text/javascript" src="js/plot.js"></script>
+  <script type="text/javascript">
+    async function getData() {
+        const resource = "data/embilitedata/EYE_e10_dd_ll.csv"; //"https://github.com/viotr1993/embilitedata/blob/main/EYE_e10_dd_ll.csv";
+        try {
+            const response = await fetch(resource, {
+                headers: {
+                    "Content-Type": "application/csv"
+                }});
+            if (!response.ok) {
+                throw new Error(`Response status ${response.status}`);
+            }
+            const json = parseEmbiData(await response.text());
+            scatterPlot(json, "myPlot");
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+    getData();
+  </script>
 </html>
